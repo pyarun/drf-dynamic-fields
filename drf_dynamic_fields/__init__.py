@@ -9,6 +9,8 @@ class DynamicFieldsMixin(object):
     A serializer mixin that takes an additional `fields` argument that controls
     which fields should be displayed.
     """
+    non_greedy=False
+    non_greedy_fields = []
 
     @property
     def fields(self):
@@ -60,8 +62,13 @@ class DynamicFieldsMixin(object):
         # Drop any fields that are not specified in the `fields` argument.
         existing = set(fields.keys())
         if filter_fields is None:
-            # no fields param given, don't filter.
-            allowed = existing
+            if self.non_greedy:
+                if not self.non_greedy_fields:
+                    raise AssertionError("When non_greedy=True. non_greedy_fields canot be empty")
+                allowed = set(filter(None, self.non_greedy_fields))
+            else:
+                # no fields param given, don't filter.
+                allowed = existing
         else:
             allowed = set(filter(None, filter_fields))
 

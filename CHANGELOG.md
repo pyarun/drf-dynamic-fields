@@ -14,6 +14,7 @@ Possible log types:
 ## [Unreleased]
 
  - ...
+ - [added] non_greedy flag, this forces adding fields query param
 
 ## [0.3.0] - 2018-03-03
 
